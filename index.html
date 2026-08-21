@@ -24,7 +24,7 @@
             const settingsUrl = url.searchParams.has('settings') ? url.searchParams.get('settings') : './settings.json';
             const contentUrl = url.searchParams.has('content')
                 ? url.searchParams.get('content')
-                : './scene.sog';
+                : './scenes/S1.sog';
 
             const renderer = url.searchParams.has('webgl') ? 'webgl' : 'webgpu';
 
@@ -674,6 +674,59 @@
                 const canvas = document.getElementById('application-canvas');
                 const settingsJson = await settings;
                 const viewer = await main(canvas, settingsJson, config);
+            });
+        </script>
+
+        <!-- Minimal scene selector: switches ?content= between /scenes/*.sog files -->
+        <div
+            id="sceneSelector"
+            style="
+                position: fixed;
+                top: max(16px, env(safe-area-inset-top));
+                right: max(16px, env(safe-area-inset-right));
+                z-index: 20;
+                display: flex;
+                gap: 6px;
+                padding: 6px;
+                border-radius: 8px;
+                background: rgba(20, 20, 20, 0.55);
+                backdrop-filter: blur(8px);
+                font-family: sans-serif;
+            "
+        ></div>
+        <script type="module">
+            const scenes = [
+                { id: 'S1', file: './scenes/S1.sog' },
+                { id: 'S2', file: './scenes/S2.sog' },
+                { id: 'S3', file: './scenes/S3.sog' },
+                { id: 'S4', file: './scenes/S4.sog' }
+            ];
+
+            const currentUrl = new URL(location.href);
+            const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S1.sog';
+
+            const selector = document.getElementById('sceneSelector');
+            scenes.forEach(({ id, file }) => {
+                const btn = document.createElement('button');
+                btn.textContent = id;
+                const active = currentContent === file;
+                btn.style.cssText = `
+                    padding: 6px 12px;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: ${active ? '#111' : '#fff'};
+                    background: ${active ? '#fff' : 'rgba(255,255,255,0.15)'};
+                `;
+                btn.addEventListener('click', () => {
+                    if (active) return;
+                    const url = new URL(location.href);
+                    url.searchParams.set('content', file);
+                    location.href = url.toString();
+                });
+                selector.appendChild(btn);
             });
         </script>
     </body>
