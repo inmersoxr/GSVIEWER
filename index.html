@@ -699,7 +699,8 @@
             "
         ></div>
         <script type="module">
-            const scenes = [
+            // Static scenes: hand-picked .sog files with no recovered publication data.
+            const staticScenes = [
                 {
                     id: 'S2',
                     file: './scenes/S2.sog',
@@ -712,9 +713,9 @@
 
             const currentUrl = new URL(location.href);
             const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S2.sog';
-
             const selector = document.getElementById('sceneSelector');
-            scenes.forEach(({ id, file, collision, settings }) => {
+
+            const addSceneButton = ({ id, file, collision, settings }) => {
                 const btn = document.createElement('button');
                 btn.textContent = id;
                 const active = currentContent === file;
@@ -745,7 +746,37 @@
                     location.href = url.toString();
                 });
                 selector.appendChild(btn);
-            });
+            };
+
+            staticScenes.forEach(addSceneButton);
+
+            // Imported Scene Packages (tools/import-scene.mjs): scenes/index.json lists
+            // package ids, each described by its own scenes/<id>/manifest.json. A
+            // deployment with no imported packages simply has no index.json — fine.
+            fetch('./scenes/index.json')
+                .then((res) => (res.ok ? res.json() : []))
+                .then((ids) => Promise.all(ids.map((id) => fetch(`./scenes/${id}/manifest.json`).then((res) => res.json()))))
+                .then((manifests) => {
+                    manifests.forEach((manifest) => {
+                        const base = `./scenes/${manifest.id}/`;
+                        const file =
+                            manifest.content?.type === 'sog'
+                                ? base + manifest.content.path
+                                : manifest.content?.type === 'meta'
+                                  ? base + manifest.content.path
+                                  : null;
+                        if (!file) return; // no content recovered for this package — nothing to load
+                        addSceneButton({
+                            id: manifest.id,
+                            file,
+                            collision: manifest.collision ? base + manifest.collision.json : null,
+                            settings: manifest.settings ? base + manifest.settings.path : null
+                        });
+                    });
+                })
+                .catch(() => {
+                    // No imported Scene Packages in this deployment — the static list above is all there is.
+                });
         </script>
     </body>
 </html>

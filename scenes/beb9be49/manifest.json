@@ -1,0 +1,31 @@
+{
+    "id": "beb9be49",
+    "sourceUrl": "https://superspl.at/scene/beb9be49",
+    "embedUrl": "https://superspl.at/s?id=beb9be49",
+    "importedAt": "2026-08-21T15:52:21.010Z",
+    "content": {
+        "type": "meta",
+        "path": "content/meta.json",
+        "files": [
+            "content/meta.json",
+            "content/means_l.webp",
+            "content/means_u.webp",
+            "content/scales.webp",
+            "content/quats.webp",
+            "content/sh0.webp"
+        ]
+    },
+    "collision": {
+        "json": "scene.voxel.json",
+        "bin": "scene.voxel.bin",
+        "sizeCheck": "ok"
+    },
+    "settings": {
+        "path": "scene.settings.json",
+        "hasCamera": true,
+        "hasAnimTracks": false,
+        "hasAnnotations": true
+    },
+    "poster": "https://s3-eu-west-1.amazonaws.com/images.playcanvas.com/splat/beb9be49/v1/xl.webp",
+    "skybox": null
+}
