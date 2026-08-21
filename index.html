@@ -20,7 +20,9 @@
 
             const posterUrl = url.searchParams.get('poster');
             const skyboxUrl = url.searchParams.get('skybox');
-            const settingsUrl = url.searchParams.has('settings') ? url.searchParams.get('settings') : './settings.json';
+            const settingsUrl = url.searchParams.has('settings')
+                ? url.searchParams.get('settings')
+                : (!url.searchParams.has('content') ? './scenes/S2.settings.json' : './settings.json');
             const contentUrl = url.searchParams.has('content')
                 ? url.searchParams.get('content')
                 : './scenes/S2.sog';
@@ -698,16 +700,21 @@
         ></div>
         <script type="module">
             const scenes = [
-                { id: 'S2', file: './scenes/S2.sog', collision: './scenes/S2.voxel.json' },
-                { id: 'S3', file: './scenes/S3.sog', collision: null },
-                { id: 'S4', file: './scenes/S4.sog', collision: null }
+                {
+                    id: 'S2',
+                    file: './scenes/S2.sog',
+                    collision: './scenes/S2.voxel.json',
+                    settings: './scenes/S2.settings.json'
+                },
+                { id: 'S3', file: './scenes/S3.sog', collision: null, settings: null },
+                { id: 'S4', file: './scenes/S4.sog', collision: null, settings: null }
             ];
 
             const currentUrl = new URL(location.href);
             const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S2.sog';
 
             const selector = document.getElementById('sceneSelector');
-            scenes.forEach(({ id, file, collision }) => {
+            scenes.forEach(({ id, file, collision, settings }) => {
                 const btn = document.createElement('button');
                 btn.textContent = id;
                 const active = currentContent === file;
@@ -729,6 +736,11 @@
                         url.searchParams.set('collision', collision);
                     } else {
                         url.searchParams.delete('collision');
+                    }
+                    if (settings) {
+                        url.searchParams.set('settings', settings);
+                    } else {
+                        url.searchParams.delete('settings');
                     }
                     location.href = url.toString();
                 });
