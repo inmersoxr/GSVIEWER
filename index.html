@@ -24,7 +24,7 @@
             const settingsUrl = url.searchParams.has('settings') ? url.searchParams.get('settings') : './settings.json';
             const contentUrl = url.searchParams.has('content')
                 ? url.searchParams.get('content')
-                : './scenes/S1.sog';
+                : './scenes/S2.sog';
 
             const renderer = url.searchParams.has('webgl') ? 'webgl' : 'webgpu';
 
@@ -696,14 +696,13 @@
         ></div>
         <script type="module">
             const scenes = [
-                { id: 'S1', file: './scenes/S1.sog' },
                 { id: 'S2', file: './scenes/S2.sog' },
                 { id: 'S3', file: './scenes/S3.sog' },
                 { id: 'S4', file: './scenes/S4.sog' }
             ];
 
             const currentUrl = new URL(location.href);
-            const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S1.sog';
+            const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S2.sog';
 
             const selector = document.getElementById('sceneSelector');
             scenes.forEach(({ id, file }) => {
