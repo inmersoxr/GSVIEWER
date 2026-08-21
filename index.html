@@ -22,13 +22,13 @@
             const skyboxUrl = url.searchParams.get('skybox');
             const settingsUrl = url.searchParams.has('settings')
                 ? url.searchParams.get('settings')
-                : (!url.searchParams.has('content') ? './scenes/S2.settings.json' : './settings.json');
+                : (!url.searchParams.has('content') ? './scenes/ef3837bd/scene.settings.json' : './settings.json');
             const contentUrl = url.searchParams.has('content')
                 ? url.searchParams.get('content')
-                : './scenes/S2.sog';
+                : './scenes/ef3837bd/content/meta.json';
             const collisionUrl = url.searchParams.has('collision')
                 ? url.searchParams.get('collision')
-                : (url.searchParams.get('voxel') ?? (!url.searchParams.has('content') ? './scenes/S2.voxel.json' : undefined));
+                : (url.searchParams.get('voxel') ?? (!url.searchParams.has('content') ? './scenes/ef3837bd/scene.voxel.json' : undefined));
 
             const renderer = url.searchParams.has('webgl') ? 'webgl' : 'webgpu';
 
@@ -700,24 +700,22 @@
         ></div>
         <script type="module">
             // Static scenes: hand-picked .sog files with no recovered publication data.
-            const staticScenes = [
-                {
-                    id: 'S2',
-                    file: './scenes/S2.sog',
-                    collision: './scenes/S2.voxel.json',
-                    settings: './scenes/S2.settings.json'
-                },
-                { id: 'S3', file: './scenes/S3.sog', collision: null, settings: null },
-                { id: 'S4', file: './scenes/S4.sog', collision: null, settings: null }
-            ];
+            const staticScenes = [{ id: 'S1', label: 'S1', file: './scenes/S1.sog', collision: null, settings: null }];
+
+            // Friendly labels for imported Scene Packages, keyed by scene id.
+            // Falls back to the raw id when a scene has no entry here.
+            const packageLabels = {
+                ef3837bd: 'Dormitorio',
+                beb9be49: 'Living Room'
+            };
 
             const currentUrl = new URL(location.href);
-            const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S2.sog';
+            const currentContent = currentUrl.searchParams.get('content') ?? './scenes/ef3837bd/content/meta.json';
             const selector = document.getElementById('sceneSelector');
 
-            const addSceneButton = ({ id, file, collision, settings }) => {
+            const addSceneButton = ({ id, label, file, collision, settings }) => {
                 const btn = document.createElement('button');
-                btn.textContent = id;
+                btn.textContent = label ?? id;
                 const active = currentContent === file;
                 btn.style.cssText = `
                     padding: 6px 12px;
@@ -768,6 +766,7 @@
                         if (!file) return; // no content recovered for this package — nothing to load
                         addSceneButton({
                             id: manifest.id,
+                            label: packageLabels[manifest.id],
                             file,
                             collision: manifest.collision ? base + manifest.collision.json : null,
                             settings: manifest.settings ? base + manifest.settings.path : null
