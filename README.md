@@ -6,8 +6,8 @@ Static Gaussian Splat viewer, built from [playcanvas/supersplat-viewer](https://
 
 - `index.html`, `index.css`, `index.js`, `index.js.map` — VIEWER (built from the official source, unmodified except branding text and a minimal scene selector)
 - `settings.json` (root) — generic fallback for scenes with no recovered publication settings: `cameras: []` so the viewer auto-frames from the gsplat's own bounding box instead of guessing a pose. Do NOT put a made-up camera pose here — an empty `cameras` array is the correct default for an unknown scene.
-- `scenes/S1.sog` — CONTENT only, no recovered publication data (button label "S1")
-- `scenes/ef3837bd/`, `scenes/beb9be49/` — Scene Packages imported from superspl.at (button labels "Dormitorio", "Living Room" — see `packageLabels` in `index.html`), each with its own `manifest.json`, content, collision (if present) and real settings (if present). See "Importing from superspl.at" below.
+- `scenes/S1.sog` — CONTENT only, no recovered publication data (selector button "1")
+- `scenes/ef3837bd/`, `scenes/beb9be49/`, `scenes/ef51f7bb/` — Scene Packages (selector buttons "2", "3", "4" — see `packageLabels` in `index.html`), each with its own `manifest.json`, content, collision (if present) and real settings (if present). `ef3837bd`/`beb9be49` came from `tools/import-scene.mjs` against public superspl.at publications; `ef51f7bb` was assembled by hand from a `.sog` + `scene.voxel.json/.bin` + `settings-<id>.json` the user already had (`sourceUrl`/`embedUrl` are `null` in its manifest to reflect that different provenance). See "Importing from superspl.at" below.
 
 The page loads the Dormitorio package (`ef3837bd`) by default, with its real settings and collision, so Walk Mode and the (auto-generated) camera animation both match the original publication. A small selector (top-right) switches between scenes, setting/clearing `?content=`, `?collision=` and `?settings=` together for whichever of those each scene has.
 

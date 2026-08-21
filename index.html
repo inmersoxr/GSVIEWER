@@ -700,13 +700,14 @@
         ></div>
         <script type="module">
             // Static scenes: hand-picked .sog files with no recovered publication data.
-            const staticScenes = [{ id: 'S1', label: 'S1', file: './scenes/S1.sog', collision: null, settings: null }];
+            const staticScenes = [{ id: 'S1', label: '1', file: './scenes/S1.sog', collision: null, settings: null }];
 
-            // Friendly labels for imported Scene Packages, keyed by scene id.
-            // Falls back to the raw id when a scene has no entry here.
+            // Selector labels are plain numbers, keyed by scene id. Falls back to the
+            // raw id when a scene has no entry here yet.
             const packageLabels = {
-                ef3837bd: 'Dormitorio',
-                beb9be49: 'Living Room'
+                ef3837bd: '2',
+                beb9be49: '3',
+                ef51f7bb: '4'
             };
 
             const currentUrl = new URL(location.href);

@@ -1,0 +1,11 @@
+{
+    "id": "ef51f7bb",
+    "sourceUrl": null,
+    "embedUrl": null,
+    "importedAt": "2026-08-21T16:11:00.000Z",
+    "content": { "type": "sog", "path": "scene.sog" },
+    "collision": { "json": "scene.voxel.json", "bin": "scene.voxel.bin", "sizeCheck": "ok" },
+    "settings": { "path": "scene.settings.json", "hasCamera": true, "hasAnimTracks": true, "hasAnnotations": true },
+    "poster": null,
+    "skybox": null
+}
