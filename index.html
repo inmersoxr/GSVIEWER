@@ -20,11 +20,13 @@
 
             const posterUrl = url.searchParams.get('poster');
             const skyboxUrl = url.searchParams.get('skybox');
-            const collisionUrl = url.searchParams.get('collision') ?? url.searchParams.get('voxel');
             const settingsUrl = url.searchParams.has('settings') ? url.searchParams.get('settings') : './settings.json';
             const contentUrl = url.searchParams.has('content')
                 ? url.searchParams.get('content')
                 : './scenes/S2.sog';
+            const collisionUrl = url.searchParams.has('collision')
+                ? url.searchParams.get('collision')
+                : (url.searchParams.get('voxel') ?? (!url.searchParams.has('content') ? './scenes/S2.voxel.json' : undefined));
 
             const renderer = url.searchParams.has('webgl') ? 'webgl' : 'webgpu';
 
@@ -696,16 +698,16 @@
         ></div>
         <script type="module">
             const scenes = [
-                { id: 'S2', file: './scenes/S2.sog' },
-                { id: 'S3', file: './scenes/S3.sog' },
-                { id: 'S4', file: './scenes/S4.sog' }
+                { id: 'S2', file: './scenes/S2.sog', collision: './scenes/S2.voxel.json' },
+                { id: 'S3', file: './scenes/S3.sog', collision: null },
+                { id: 'S4', file: './scenes/S4.sog', collision: null }
             ];
 
             const currentUrl = new URL(location.href);
             const currentContent = currentUrl.searchParams.get('content') ?? './scenes/S2.sog';
 
             const selector = document.getElementById('sceneSelector');
-            scenes.forEach(({ id, file }) => {
+            scenes.forEach(({ id, file, collision }) => {
                 const btn = document.createElement('button');
                 btn.textContent = id;
                 const active = currentContent === file;
@@ -723,6 +725,11 @@
                     if (active) return;
                     const url = new URL(location.href);
                     url.searchParams.set('content', file);
+                    if (collision) {
+                        url.searchParams.set('collision', collision);
+                    } else {
+                        url.searchParams.delete('collision');
+                    }
                     location.href = url.toString();
                 });
                 selector.appendChild(btn);
